@@ -12,8 +12,8 @@ __global__ void kernel(cv::Mat *d_dest, int rows, int cols)
 	int index = index_y * grid_width + index_x; // access thread # within all grids
 	int r = blockIdx.y * gridDim.x + blockIdx.x; // access block # within all grids
 
-	int x = (float)((float)index / (float)rows);
-	int y = (float)((float)index / (float)cols);
+	int x = threadIdx.x;
+	int y = blockIdx.x;
 
 	//printf("[%d, %d]\n", index_x, index_y);
 	printf("[%d, %d, %d ||| %d, %d, %d] --> %d, %d ||| [%d] --> %d --> %d ||| %d !!! %d, %d\n", blockIdx.x, blockDim.x, threadIdx.x, blockIdx.y, blockDim.y, threadIdx.y, index_x, index_y, gridDim.x, grid_width, index, r, x, y);
@@ -33,13 +33,14 @@ void			cudaTest(cv::Mat *h_ori, cv::Mat *h_dest)
 	cudaMalloc((void**)&d_ori, sizeof(cv::Mat));
 	cudaMalloc((void**)&d_dest, sizeof(cv::Mat));
 
-	blockSize = 1;
-	gridSize = pixels / blockSize;
-	if (pixels % blockSize)
-		++gridSize;
+	// blockSize = 1;
+	// gridSize = pixels / blockSize;
+	// if (pixels % blockSize)
+	// 	++gridSize;
 
 	cudaMemcpy(d_dest, h_dest, sizeof(cv::Mat), cudaMemcpyHostToDevice);
-	kernel<<< gridSize, blockSize >>>(d_dest, rows, cols);
+	// kernel<<< gridSize, blockSize >>>(d_dest, rows, cols);
+	kernel<<< rows, cols >>>(d_dest, rows, cols);
 	cudaMemcpy(h_dest, d_dest, sizeof(cv::Mat), cudaMemcpyDeviceToHost);
 	cudaFree(d_ori);
 	cudaFree(d_dest);
