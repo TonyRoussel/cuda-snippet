@@ -4,5 +4,7 @@
 !*.cu
 !*.cpp
 !imageRotation
+!imageRotation/srcs
+!imageRotation/includes
 !Makefile
 !.git*
