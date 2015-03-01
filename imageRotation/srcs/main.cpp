@@ -24,6 +24,11 @@ int main(int ac, char **av)
 	originName = av[1];
 	destName = av[2];
 	h_originImg = new cv::Mat();
-	*h_originImg = cv::imread(originName, CV_8UC1);
+	*h_originImg = cv::imread(originName, CV_LOAD_IMAGE_COLOR);
+	/***********************/
+	h_destImg = new cv::Mat();
+	h_originImg->copyTo(*h_destImg);
+	/***********************/
+	cv::imwrite(destName, *h_destImg);
 	return (0);
 }
