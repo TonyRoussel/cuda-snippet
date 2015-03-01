@@ -2,6 +2,7 @@
 !.gitignore
 !util
 !*.cu
+!*.cpp
 !imageRotation
 !Makefile
 !.git*
