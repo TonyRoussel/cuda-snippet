@@ -13,7 +13,7 @@ NAME =	cudaImgRot
 
 SRCDIR = srcs/
 
-CPPFILES =	main.cpp
+CPPFILES =	main.cu
 SRC = $(addprefix $(SRCDIR), $(CPPFILES))
 GPP = nvcc -std=c++11
 OBJ = $(SRC:.cpp=.o)
