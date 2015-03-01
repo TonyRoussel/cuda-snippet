@@ -6,17 +6,17 @@
 /********************/
 __global__ void kernel(cv::Mat *d_ori, cv::Mat *d_dest, int rows, int cols)
 {
-	int x = threadIdx.x;
-	int y = blockIdx.x;
 	int index_x = blockIdx.x * blockDim.x + threadIdx.x; // access thread # within all grids
-	// int index_y = blockIdx.y * blockDim.y + threadIdx.y;
-	// int grid_width = gridDim.x * blockDim.x; // access # of thread
-	// int index = index_y * grid_width + index_x; // access thread # within all grids
-	// int r = blockIdx.y * gridDim.x + blockIdx.x; // access block # within all grids
+	int index_y = blockIdx.y * blockDim.y + threadIdx.y;
+	int grid_width = gridDim.x * blockDim.x; // access # of thread
+	int index = index_y * grid_width + index_x; // access thread # within all grids
+	int r = blockIdx.y * gridDim.x + blockIdx.x; // access block # within all grids
 
+	int x = (index * cols - index) / (rows * cols - 1);
+	int y = ((rows - 1) * index) / (rows * cols - 1);
 
-	// //printf("[%d, %d]\n", index_x, index_y);
-	// printf("[%d, %d, %d ||| %d, %d, %d] --> %d, %d ||| [%d] --> %d --> %d ||| %d !!! %d, %d\n", blockIdx.x, blockDim.x, threadIdx.x, blockIdx.y, blockDim.y, threadIdx.y, index_x, index_y, gridDim.x, grid_width, index, r, x, y);
+	//printf("[%d, %d]\n", index_x, index_y);
+	printf("[%d, %d, %d ||| %d, %d, %d] --> %d, %d ||| [%d] --> %d --> %d ||| %d !!! %d, %d\n", blockIdx.x, blockDim.x, threadIdx.x, blockIdx.y, blockDim.y, threadIdx.y, index_x, index_y, gridDim.x, grid_width, index, r, x, y);
 	
 	return ;
 }
